@@ -1,8 +1,10 @@
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { FaCalendar, FaUser } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 const Blog = () => {
+  const navigate = useNavigate();
   const blogPosts = [
     {
       id: 1,
@@ -63,7 +65,13 @@ const Blog = () => {
                 </div>
               </CardContent>
               <CardFooter>
-                <Button variant="outline" className="w-full">Read More</Button>
+                <Button 
+                  variant="outline" 
+                  className="w-full"
+                  onClick={() => navigate(`/blog/${post.id}`)}
+                >
+                  Read More
+                </Button>
               </CardFooter>
             </Card>
           ))}

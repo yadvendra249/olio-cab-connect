@@ -16,8 +16,12 @@ import TourPackages from "./pages/TourPackages";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
 import Blog from "./pages/Blog";
+import BlogDetail from "./pages/BlogDetail";
 import Contact from "./pages/Contact";
 import FAQ from "./pages/FAQ";
+import AdminPanel from "./pages/admin/AdminPanel";
+import AddCar from "./pages/admin/AddCar";
+import AddDriver from "./pages/admin/AddDriver";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -43,8 +47,12 @@ const App = () => (
                 <Route path="/my-bookings" element={<Profile />} />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/blog" element={<Blog />} />
+                <Route path="/blog/:id" element={<BlogDetail />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/faq" element={<FAQ />} />
+                <Route path="/admin" element={<AdminPanel />} />
+                <Route path="/admin/add-car" element={<AddCar />} />
+                <Route path="/admin/add-driver" element={<AddDriver />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

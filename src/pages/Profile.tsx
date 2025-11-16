@@ -1,9 +1,11 @@
+import { useState, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { FaUser, FaEnvelope, FaPhone } from 'react-icons/fa';
+import { Button } from '@/components/ui/button';
+import { FaUser, FaEnvelope, FaPhone, FaEdit, FaTrash } from 'react-icons/fa';
 import {
   Table,
   TableBody,
@@ -13,10 +15,18 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 const Profile = () => {
   const { user } = useSelector((state: RootState) => state.auth);
   const { bookings } = useSelector((state: RootState) => state.booking);
+  const [statusFilter, setStatusFilter] = useState('all');
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -31,6 +41,26 @@ const Profile = () => {
       default:
         return '';
     }
+  };
+
+  // Filter bookings
+  const filteredBookings = useMemo(() => {
+    if (statusFilter === 'all') return bookings;
+    return bookings.filter((booking) => booking.status === statusFilter);
+  }, [bookings, statusFilter]);
+
+  // Separate bookings by status
+  const pendingBookings = bookings.filter((b) => b.status === 'pending');
+  const confirmedBookings = bookings.filter((b) => b.status === 'confirmed');
+  const completedBookings = bookings.filter((b) => b.status === 'completed');
+  const cancelledBookings = bookings.filter((b) => b.status === 'cancelled');
+
+  const handleEdit = (bookingId: string) => {
+    console.log('Edit booking:', bookingId);
+  };
+
+  const handleDelete = (bookingId: string) => {
+    console.log('Delete booking:', bookingId);
   };
 
   return (
@@ -108,46 +138,88 @@ const Profile = () => {
           <TabsContent value="bookings">
             <Card>
               <CardHeader>
-                <CardTitle>Booking History</CardTitle>
+                <CardTitle>My Bookings</CardTitle>
+                <div className="flex gap-4 mt-4">
+                  <Select value={statusFilter} onValueChange={setStatusFilter}>
+                    <SelectTrigger className="w-[200px]">
+                      <SelectValue placeholder="Filter by status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Bookings ({bookings.length})</SelectItem>
+                      <SelectItem value="pending">Pending ({pendingBookings.length})</SelectItem>
+                      <SelectItem value="confirmed">Confirmed ({confirmedBookings.length})</SelectItem>
+                      <SelectItem value="completed">Completed ({completedBookings.length})</SelectItem>
+                      <SelectItem value="cancelled">Cancelled ({cancelledBookings.length})</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </CardHeader>
               <CardContent>
-                {bookings.length > 0 ? (
-                  <div className="rounded-md border overflow-x-auto">
+                {filteredBookings.length === 0 ? (
+                  <p className="text-center text-muted-foreground py-8">
+                    {statusFilter === 'all' 
+                      ? 'No bookings yet. Book your first ride now!'
+                      : `No ${statusFilter} bookings found.`}
+                  </p>
+                ) : (
+                  <div className="space-y-4">
                     <Table>
                       <TableHeader>
                         <TableRow>
                           <TableHead>Booking ID</TableHead>
                           <TableHead>Type</TableHead>
                           <TableHead>Category</TableHead>
-                          <TableHead>Pickup</TableHead>
-                          <TableHead>Drop</TableHead>
+                          <TableHead>From</TableHead>
+                          <TableHead>To</TableHead>
                           <TableHead>Date</TableHead>
                           <TableHead>Status</TableHead>
+                          <TableHead>Actions</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {bookings.map((booking) => (
+                        {filteredBookings.map((booking) => (
                           <TableRow key={booking.id}>
-                            <TableCell className="font-medium">{booking.id}</TableCell>
+                            <TableCell className="font-mono text-sm">
+                              {booking.id.slice(0, 8)}...
+                            </TableCell>
                             <TableCell className="capitalize">{booking.type}</TableCell>
                             <TableCell className="capitalize">{booking.category}</TableCell>
-                            <TableCell>{booking.pickupLocation}</TableCell>
-                            <TableCell>{booking.dropLocation}</TableCell>
+                            <TableCell className="text-sm">{booking.pickupLocation}</TableCell>
+                            <TableCell className="text-sm">{booking.dropLocation}</TableCell>
                             <TableCell>{booking.date}</TableCell>
                             <TableCell>
                               <Badge className={getStatusColor(booking.status)}>
                                 {booking.status}
                               </Badge>
                             </TableCell>
+                            <TableCell>
+                              <div className="flex gap-2">
+                                {booking.status === 'pending' && (
+                                  <>
+                                    <Button
+                                      size="sm"
+                                      variant="outline"
+                                      onClick={() => handleEdit(booking.id)}
+                                      className="text-primary"
+                                    >
+                                      <FaEdit />
+                                    </Button>
+                                    <Button
+                                      size="sm"
+                                      variant="outline"
+                                      onClick={() => handleDelete(booking.id)}
+                                      className="text-destructive"
+                                    >
+                                      <FaTrash />
+                                    </Button>
+                                  </>
+                                )}
+                              </div>
+                            </TableCell>
                           </TableRow>
                         ))}
                       </TableBody>
                     </Table>
-                  </div>
-                ) : (
-                  <div className="text-center py-12">
-                    <p className="text-muted-foreground text-lg">No bookings yet</p>
-                    <p className="text-muted-foreground mt-2">Start your journey by booking a ride!</p>
                   </div>
                 )}
               </CardContent>

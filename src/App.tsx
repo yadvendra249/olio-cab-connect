@@ -20,6 +20,7 @@ import Blog from "./pages/Blog";
 import BlogDetail from "./pages/BlogDetail";
 import Contact from "./pages/Contact";
 import FAQ from "./pages/FAQ";
+import Dashboard from "./pages/admin/Dashboard";
 import AdminPanel from "./pages/admin/AdminPanel";
 import AddCar from "./pages/admin/AddCar";
 import AddDriver from "./pages/admin/AddDriver";
@@ -48,7 +49,8 @@ const AppContent = () => {
                 <Route path="/blog/:id" element={<BlogDetail />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/faq" element={<FAQ />} />
-                <Route path="/admin" element={<AdminPanel />} />
+                <Route path="/admin" element={<Dashboard />} />
+                <Route path="/admin/bookings" element={<AdminPanel />} />
                 <Route path="/admin/add-car" element={<AddCar />} />
                 <Route path="/admin/add-driver" element={<AddDriver />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

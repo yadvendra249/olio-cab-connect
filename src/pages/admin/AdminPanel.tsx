@@ -99,7 +99,10 @@ const AdminPanel = () => {
     <div className="min-h-screen bg-secondary/10 py-12">
       <div className="container mx-auto px-4 max-w-7xl">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-4xl font-bold text-foreground">Admin Panel</h1>
+          <div>
+            <h1 className="text-4xl font-bold text-foreground">Booking Management</h1>
+            <p className="text-muted-foreground mt-2">Manage all bookings and approvals</p>
+          </div>
           <div className="flex gap-3">
             <Button onClick={() => navigate('/admin/add-car')} className="flex items-center gap-2">
               <FaCar /> Add Car

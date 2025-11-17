@@ -40,8 +40,14 @@ const bookingSlice = createSlice({
         booking.status = 'cancelled';
       }
     },
+    approveBooking: (state, action: PayloadAction<string>) => {
+      const booking = state.bookings.find(b => b.id === action.payload);
+      if (booking) {
+        booking.status = 'confirmed';
+      }
+    },
   },
 });
 
-export const { addBooking, updateBooking, cancelBooking } = bookingSlice.actions;
+export const { addBooking, updateBooking, cancelBooking, approveBooking } = bookingSlice.actions;
 export default bookingSlice.reducer;

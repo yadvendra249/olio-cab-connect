@@ -29,12 +29,14 @@ const Login = () => {
     validationSchema,
     onSubmit: async (values) => {
       try {
-        // Simulate API call
+        // Simulate API call - Check if admin email
+        const isAdmin = values.email === 'admin@oliocar.com';
         const mockUser = {
           id: '1',
-          name: 'John Doe',
+          name: isAdmin ? 'Admin User' : 'John Doe',
           email: values.email,
           mobile: '1234567890',
+          role: isAdmin ? 'admin' as const : 'user' as const,
         };
         const mockToken = 'mock-jwt-token';
 
@@ -44,10 +46,10 @@ const Login = () => {
 
         toast({
           title: 'Success',
-          description: 'Logged in successfully!',
+          description: `Welcome ${isAdmin ? 'Admin' : 'back'}!`,
         });
 
-        navigate('/');
+        navigate(isAdmin ? '/admin' : '/');
       } catch (error) {
         toast({
           title: 'Error',
@@ -130,6 +132,13 @@ const Login = () => {
               Sign Up
             </Link>
           </p>
+
+          {/* Admin Login Hint */}
+          <div className="mt-4 p-3 bg-primary/5 border border-primary/20 rounded-lg">
+            <p className="text-xs text-center text-muted-foreground">
+              💡 <span className="font-semibold">Admin access:</span> Use <code className="px-1 py-0.5 bg-primary/10 rounded text-primary">admin@oliocar.com</code>
+            </p>
+          </div>
         </div>
       </div>
     </div>

@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/store/store';
 import { logout } from '@/store/slices/authSlice';
-import { FaCar, FaBars, FaTimes, FaUser, FaCog, FaClipboardList, FaSignOutAlt, FaUserShield } from 'react-icons/fa';
+import { FaCar, FaBars, FaTimes, FaUser, FaCog, FaClipboardList, FaSignOutAlt, FaUserShield, FaChartLine } from 'react-icons/fa';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -84,8 +84,12 @@ const Navbar = () => {
                     <>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem onClick={() => navigate('/admin')} className="cursor-pointer text-primary">
+                        <FaChartLine className="mr-2 h-4 w-4" />
+                        <span>Dashboard</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => navigate('/admin/bookings')} className="cursor-pointer text-primary">
                         <FaUserShield className="mr-2 h-4 w-4" />
-                        <span>Admin Panel</span>
+                        <span>Manage Bookings</span>
                       </DropdownMenuItem>
                     </>
                   )}

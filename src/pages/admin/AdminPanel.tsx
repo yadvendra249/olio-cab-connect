@@ -1,6 +1,8 @@
 import { useState, useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/store/store';
+import { approveBooking, cancelBooking } from '@/store/slices/bookingSlice';
+import { toast } from '@/hooks/use-toast';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -33,6 +35,7 @@ import { useNavigate } from 'react-router-dom';
 
 const AdminPanel = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { bookings } = useSelector((state: RootState) => state.booking);
   const [currentPage, setCurrentPage] = useState(1);
   const [statusFilter, setStatusFilter] = useState('all');
@@ -76,13 +79,20 @@ const AdminPanel = () => {
   };
 
   const handleApprove = (bookingId: string) => {
-    // In real app, dispatch action to update booking status
-    console.log('Approve booking:', bookingId);
+    dispatch(approveBooking(bookingId));
+    toast({
+      title: '✅ Booking Approved',
+      description: 'The booking has been confirmed successfully.',
+    });
   };
 
   const handleCancel = (bookingId: string) => {
-    // In real app, dispatch action to update booking status
-    console.log('Cancel booking:', bookingId);
+    dispatch(cancelBooking(bookingId));
+    toast({
+      title: '❌ Booking Cancelled',
+      description: 'The booking has been cancelled.',
+      variant: 'destructive',
+    });
   };
 
   return (

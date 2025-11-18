@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import CabBooking from '@/components/Booking/CabBooking';
-import DriverBooking from '@/components/Booking/DriverBooking';
+import CabBooking from '@/components/Booking/CabBookingUpdated';
+import DriverBooking from '@/components/Booking/DriverBookingUpdated';
 import { FaCar, FaUserTie } from 'react-icons/fa';
 
 const Booking = () => {

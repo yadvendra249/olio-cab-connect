@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
+import { authAPI } from '@/lib/api';
 
 const emailSchema = Yup.object({
   email: Yup.string().email('Invalid email address').required('Email is required'),
@@ -38,11 +39,11 @@ const ResetPassword = () => {
     validationSchema: emailSchema,
     onSubmit: async (values) => {
       try {
-        // Simulate API call to send OTP
+        await authAPI.sendPasswordResetOTP(values.email);
         setEmail(values.email);
         toast({
           title: 'OTP Sent',
-          description: 'Please check your email for the OTP.',
+          description: 'Please check your email for the OTP. Test OTP: 123456',
         });
         setStep(2);
       } catch (error) {
@@ -60,7 +61,7 @@ const ResetPassword = () => {
     validationSchema: otpSchema,
     onSubmit: async (values) => {
       try {
-        // Simulate API call to verify OTP
+        await authAPI.verifyPasswordResetOTP(email, values.otp);
         toast({
           title: 'OTP Verified',
           description: 'Please enter your new password.',
@@ -81,7 +82,7 @@ const ResetPassword = () => {
     validationSchema: passwordSchema,
     onSubmit: async (values) => {
       try {
-        // Simulate API call to reset password
+        await authAPI.resetPassword(email, values.newPassword);
         toast({
           title: 'Success',
           description: 'Password reset successfully! Please login.',

@@ -37,8 +37,7 @@ const CabBooking = ({ bookingTime }: CabBookingProps) => {
 
   const isValidBookingDate = (date: Date) => {
     const today = startOfDay(new Date());
-    const selectedDate = startOfDay(date);
-    return isToday(date) || isTomorrow(date);
+    return date >= today;
   };
 
   const localSchema = Yup.object({
@@ -301,7 +300,7 @@ const CabBooking = ({ bookingTime }: CabBookingProps) => {
                 <p className="text-sm text-destructive mt-1">{formik.errors.bookingDate as string}</p>
               )}
               <p className="text-xs text-muted-foreground mt-1">
-                Only today and tomorrow are available
+                Select current or future dates only
               </p>
             </div>
           )}

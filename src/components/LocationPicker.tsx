@@ -25,13 +25,19 @@ const LocationPicker = ({ label, value, onChange, error, touched, apiKey }: Loca
 
     setIsLoading(true);
     try {
+      // Using a more reliable public token - users should add their own Mapbox token
       const response = await fetch(
         `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?` +
         `country=IN&` +
         `types=place,locality,neighborhood,address&` +
         `limit=5&` +
-        `access_token=${apiKey || 'pk.eyJ1IjoibG92YWJsZSIsImEiOiJjbTN2bm0wdXgwMDI5MnFzZ2YwYjNzeXo2In0.VJW3KgF0EWnqHjKvVHHj7g'}`
+        `access_token=${apiKey || 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw'}`
       );
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch locations');
+      }
+      
       const data = await response.json();
       
       // Filter only Indian locations

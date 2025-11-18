@@ -25,7 +25,8 @@ const DriverBooking = ({ bookingTime }: DriverBookingProps) => {
   const [bookingDetails, setBookingDetails] = useState<any>(null);
 
   const isValidBookingDate = (date: Date) => {
-    return isToday(date) || isTomorrow(date);
+    const today = startOfDay(new Date());
+    return date >= today;
   };
 
   const localSchema = Yup.object({
@@ -182,7 +183,7 @@ const DriverBooking = ({ bookingTime }: DriverBookingProps) => {
                 <p className="text-sm text-destructive mt-1">{formik.errors.startDateTime as string}</p>
               )}
               <p className="text-xs text-muted-foreground mt-1">
-                Only today and tomorrow are available
+                Select current or future dates only
               </p>
             </div>
           )}
@@ -219,7 +220,7 @@ const DriverBooking = ({ bookingTime }: DriverBookingProps) => {
                 <p className="text-sm text-destructive mt-1">{formik.errors.endDateTime as string}</p>
               )}
               <p className="text-xs text-muted-foreground mt-1">
-                Only today and tomorrow are available
+                Select current or future dates only
               </p>
             </div>
           )}
